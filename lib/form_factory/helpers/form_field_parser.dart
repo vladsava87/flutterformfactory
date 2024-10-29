@@ -7,9 +7,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 final class FormFieldParser {
   static List<FormDynamicField> parseJsonFormFields(String jsonString) {
     List<dynamic> jsonData = jsonDecode(jsonString);
-
     var data = jsonData.map((field) => _parseJsonField(field)).toList();
-
     return data;
   }
 

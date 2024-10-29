@@ -6,13 +6,18 @@ class FormData {
     "label": "Name",
     "hint": "Your name here",
     "type": "text",
-    "validators": ["required"]
+    "validators": [
+      {"value": "required", "label": "This field is required"}
+    ]
   },
   {
     "name": "email",
     "label": "Email",
     "type": "email",
-    "validators": ["required", "email"]
+    "validators": [
+      {"value": "required", "label": "This field is required"},
+      {"value": "email", "label": "Enter a valid email"}
+    ]
   },
   {
     "name": "salary",
@@ -20,26 +25,35 @@ class FormData {
     "hint": "Type salary here",
     "format": "\$",
     "type": "number",
-    "validators": ["required"]
+    "validators": [
+      {"value": "required", "label": "This field is required"}
+    ]
   },
   {
     "name": "age",
     "label": "Age",
     "type": "number",
-    "validators": ["required", "min:18"]
+    "validators": [
+      {"value": "required", "label": "This field is required"},
+      {"value": "min:18", "label": "Age should be higher than 18"}
+    ]
   },
   {
     "name": "isemplyed",
     "label": "Is employed",
     "type": "radio",
     "values": ["Yes", "No"],
-    "validators": ["required"]
+    "validators": [
+      {"value": "required", "label": "This field is required"}
+    ]
   },
   {
     "name": "date",
     "label": "Select emplyment date",
     "type": "date",
-    "validators": ["required"]
+    "validators": [
+      {"value": "required", "label": "This field is required"}
+    ]
   },
   {
     "name": "country",
@@ -50,7 +64,9 @@ class FormData {
       {"value": "CAN", "label": "Canada"},
       {"value": "MEX", "label": "Mexico"}
     ],
-    "validators": ["required"]
+    "validators": [
+      {"value": "required", "label": "This field is required"}
+    ]
   },
   {
     "name": "comment",

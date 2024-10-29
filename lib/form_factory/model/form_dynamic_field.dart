@@ -10,7 +10,7 @@ class FormDynamicField<T> {
   final int? lines;
   final List<String>? values;
   final T? value;
-  final List<FormFieldValidator<dynamic>> validators;
+  final List<FormFieldValidator<dynamic>>? validators;
   final List<Map<String, dynamic>>? options;
 
   FormDynamicField({

@@ -7,7 +7,10 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 final class FormFieldParser {
   static List<FormDynamicField> parseJsonFormFields(String jsonString) {
     List<dynamic> jsonData = jsonDecode(jsonString);
-    return jsonData.map((field) => _parseJsonField(field)).toList();
+
+    var data = jsonData.map((field) => _parseJsonField(field)).toList();
+
+    return data;
   }
 
   static EFieldType _fieldTypeFromString(String type) {
@@ -36,6 +39,10 @@ final class FormFieldParser {
   static FormDynamicField _parseJsonField(Map<String, dynamic> jsonField) {
     final fieldType = _fieldTypeFromString(jsonField['type']);
 
+    List<Map<String, dynamic>> validators = (jsonField['validators'] != null)
+        ? List<Map<String, dynamic>>.from(jsonField['validators'])
+        : [];
+
     if (fieldType == EFieldType.date) {
       return FormDynamicField<DateTime>(
         name: jsonField['name'],
@@ -48,9 +55,8 @@ final class FormFieldParser {
             ? List<String>.from(jsonField['values'])
             : const [],
         hint: jsonField['hint'],
-        validators: (jsonField['validators'] != null)
-            ? _parseDateTimeValidators(
-                List<String>.from(jsonField['validators']))
+        validators: (validators.isNotEmpty)
+            ? _parseDateTimeValidators(validators)
             : const [],
       );
     } else if (fieldType == EFieldType.dropdown) {
@@ -62,8 +68,9 @@ final class FormFieldParser {
         hint: jsonField['hint'],
         type: fieldType,
         value: jsonField['value'] ?? '',
-        validators:
-            _parseStringValidators(List<String>.from(jsonField['validators'])),
+        validators: (validators.isNotEmpty)
+            ? _parseStringValidators(validators)
+            : const [],
         options: options,
       );
     } else {
@@ -78,34 +85,35 @@ final class FormFieldParser {
         hint: jsonField['hint'],
         format: jsonField['format'],
         lines: jsonField['lines'],
-        validators: (jsonField['validators'] != null)
-            ? _parseStringValidators(List<String>.from(jsonField['validators']))
+        validators: (validators.isNotEmpty)
+            ? _parseStringValidators(validators)
             : const [],
       );
     }
   }
 
   static List<FormFieldValidator<dynamic>> _parseStringValidators(
-      List<String> validators) {
+      List<Map<String, dynamic>>? validators) {
     List<FormFieldValidator<dynamic>> parsedValidators = [];
-    for (var validator in validators) {
-      if (validator == "required") {
+
+    for (var validator in validators!) {
+      if (validator['value'] == "required") {
         parsedValidators.add((dynamic value) {
           if (value == null || (value is String && value.isEmpty)) {
-            return 'This field is required';
+            return validator['label'];
           }
           return null;
         });
-      } else if (validator.startsWith("min:")) {
-        int minValue = int.parse(validator.split(":")[1]);
+      } else if (validator['value'].startsWith("min:")) {
+        int minValue = int.parse(validator['value'].split(":")[1]);
         parsedValidators.add(FormBuilderValidators.min(minValue));
-      } else if (validator == "email") {
+      } else if (validator['value'] == "email") {
         parsedValidators.add((dynamic value) {
           if (value != null &&
               value is String &&
               !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")
                   .hasMatch(value)) {
-            return 'Enter a valid email';
+            return validator['label'];
           }
           return null;
         });
@@ -116,18 +124,18 @@ final class FormFieldParser {
   }
 
   static List<FormFieldValidator<dynamic>> _parseDateTimeValidators(
-      List<String> validators) {
+      List<Map<String, dynamic>>? validators) {
     List<FormFieldValidator<dynamic>> parsedValidators = [];
-    for (var validator in validators) {
-      if (validator == "required") {
+
+    for (var validator in validators!) {
+      if (validator['value'] == "required") {
         parsedValidators.add((dynamic value) {
           if (value == null || value is! DateTime) {
-            return 'This field is required';
+            return validator['label'];
           }
           return null;
         });
       }
-      // Add more DateTime-specific validators here
     }
     return parsedValidators;
   }

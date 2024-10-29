@@ -129,7 +129,7 @@ class DynamicFormFieldBuilder {
         onChanged: (value) => ref
             .read(formFactoryProvider(jsonFormStructure).notifier)
             .updateFieldValue(field.name, value),
-        validator: FormBuilderValidators.compose(field.validators),
+        validator: FormBuilderValidators.compose(field.validators!),
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -175,7 +175,7 @@ class DynamicFormFieldBuilder {
         onChanged: (value) => ref
             .read(formFactoryProvider(jsonFormStructure).notifier)
             .updateFieldValue(field.name, value),
-        validator: FormBuilderValidators.compose(field.validators),
+        validator: FormBuilderValidators.compose(field.validators!),
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -223,7 +223,7 @@ class DynamicFormFieldBuilder {
               onChanged: (value) => ref
                   .read(formFactoryProvider(jsonFormStructure).notifier)
                   .updateFieldValue(field.name, value),
-              validator: FormBuilderValidators.compose(field.validators),
+              validator: FormBuilderValidators.compose(field.validators!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
           ),
@@ -266,7 +266,7 @@ class DynamicFormFieldBuilder {
                 onChanged: (value) => ref
                     .read(formFactoryProvider(jsonFormStructure).notifier)
                     .updateFieldValue(field.name, value),
-                validator: FormBuilderValidators.compose(field.validators),
+                validator: FormBuilderValidators.compose(field.validators!),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               )),
         );
@@ -285,7 +285,7 @@ class DynamicFormFieldBuilder {
                     }
                   },
                   child: FormBuilderRadioGroup(
-                    validator: FormBuilderValidators.compose(field.validators),
+                    validator: FormBuilderValidators.compose(field.validators!),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     name: field.name,
                     decoration: InputDecoration.collapsed(hintText: field.hint),
@@ -340,7 +340,7 @@ class DynamicFormFieldBuilder {
                 onChanged: (value) => ref
                     .read(formFactoryProvider(jsonFormStructure).notifier)
                     .updateFieldValue(field.name, value),
-                validator: FormBuilderValidators.compose(field.validators),
+                validator: FormBuilderValidators.compose(field.validators!),
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               )),
@@ -391,7 +391,7 @@ class DynamicFormFieldBuilder {
                 onChanged: (value) => ref
                     .read(formFactoryProvider(jsonFormStructure).notifier)
                     .updateFieldValue(field.name, value),
-                validator: FormBuilderValidators.compose(field.validators),
+                validator: FormBuilderValidators.compose(field.validators!),
                 keyboardType: TextInputType.number,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               )),

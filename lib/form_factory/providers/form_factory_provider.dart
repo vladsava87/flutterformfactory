@@ -26,12 +26,14 @@ class DynamicFormStateNotifier extends StateNotifier<List<FormDynamicField>> {
     ];
   }
 
-  void submitForm() {
+  void submitForm(Function(String data)? onFormSubmit) {
     final formData = {
       for (final field in state) field.name: field.value,
     };
-    // ignore: avoid_print
-    print('Form Submitted with Data: $formData');
+
+    if (onFormSubmit != null) {
+      onFormSubmit('Form Submitted with Data: $formData');
+    }
   }
 }
 

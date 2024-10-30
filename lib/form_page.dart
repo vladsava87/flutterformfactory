@@ -26,12 +26,12 @@ class _FormPageState extends ConsumerState<FormPage> {
   @override
   Widget build(BuildContext context) {
     final formFieldBuilder = DynamicFormFieldBuilder(
-      ref: ref,
-      formKey: formKey,
-      jsonFormStructure: jsonFormStructure,
-      sumbitButtonText: "Submit form",
-      formTitle: "Employee form",
-    );
+        ref: ref,
+        formKey: formKey,
+        jsonFormStructure: jsonFormStructure,
+        sumbitButtonText: "Submit form",
+        formTitle: "Employee form",
+        onFormSubmit: dialogBuilder);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,6 +52,31 @@ class _FormPageState extends ConsumerState<FormPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> dialogBuilder(String data) {
+    return showDialog<void>(
+      context: context,
+      builder: (
+        BuildContext context,
+      ) {
+        return AlertDialog(
+          title: const Text('Form data'),
+          content: Text(data),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

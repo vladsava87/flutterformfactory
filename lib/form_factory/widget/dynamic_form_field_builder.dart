@@ -13,6 +13,7 @@ class DynamicFormFieldBuilder {
   final String jsonFormStructure;
   final String? formTitle;
   final String? sumbitButtonText;
+  final Function(String formata)? onFormSubmit;
 
   DynamicFormFieldBuilder({
     required this.ref,
@@ -20,6 +21,7 @@ class DynamicFormFieldBuilder {
     required this.jsonFormStructure,
     this.sumbitButtonText,
     this.formTitle,
+    this.onFormSubmit,
   });
 
   Widget renderForm() {
@@ -47,7 +49,7 @@ class DynamicFormFieldBuilder {
               if (formKey.currentState!.saveAndValidate()) {
                 ref
                     .read(formFactoryProvider(jsonFormStructure).notifier)
-                    .submitForm();
+                    .submitForm(onFormSubmit);
               } else {
                 // ignore: avoid_print
                 print('Form validation failed');
@@ -279,23 +281,24 @@ class DynamicFormFieldBuilder {
             children: [
               Text(field.label),
               Focus(
-                  onFocusChange: (hasFocus) {
-                    if (!hasFocus) {
-                      formKey.currentState?.fields[field.name]?.validate();
-                    }
-                  },
-                  child: FormBuilderRadioGroup(
-                    validator: FormBuilderValidators.compose(field.validators!),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    name: field.name,
-                    decoration: InputDecoration.collapsed(hintText: field.hint),
-                    onChanged: (value) => ref
-                        .read(formFactoryProvider(jsonFormStructure).notifier)
-                        .updateFieldValue(field.name, value),
-                    options: field.values!.map((value) {
-                      return FormBuilderFieldOption<String>(value: value);
-                    }).toList(),
-                  )),
+                onFocusChange: (hasFocus) {
+                  if (!hasFocus) {
+                    formKey.currentState?.fields[field.name]?.validate();
+                  }
+                },
+                child: FormBuilderRadioGroup(
+                  validator: FormBuilderValidators.compose(field.validators!),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  name: field.name,
+                  decoration: InputDecoration.collapsed(hintText: field.hint),
+                  onChanged: (value) => ref
+                      .read(formFactoryProvider(jsonFormStructure).notifier)
+                      .updateFieldValue(field.name, value),
+                  options: field.values!.map((value) {
+                    return FormBuilderFieldOption<String>(value: value);
+                  }).toList(),
+                ),
+              ),
             ],
           ),
         );
